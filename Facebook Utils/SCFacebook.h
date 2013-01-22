@@ -44,7 +44,6 @@ typedef enum {
 } FBPostType;
 
 @interface SCFacebook : NSObject <FBSessionDelegate, FBRequestDelegate, FBDialogDelegate>{
-    Facebook *_facebook;
     NSArray *_permissions;
     NSMutableDictionary *_userPermissions;
     SCFacebookCallback _callback;
@@ -52,6 +51,7 @@ typedef enum {
 }
 
 @property (nonatomic, assign) FBPostType postType;
+@property (nonatomic, retain) Facebook *facebook;
 
 +(SCFacebook *)shared;
 +(void)loginCallBack:(SCFacebookCallback)callBack;

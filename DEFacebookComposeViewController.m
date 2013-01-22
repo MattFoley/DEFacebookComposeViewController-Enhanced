@@ -30,7 +30,7 @@
 #import "DEFacebookGradientView.h"
 #import "UIDevice+DEFacebookComposeViewController.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "SCFacebook.h"
 #import <Social/Social.h>
 
 static BOOL waitingForAccess = NO;
@@ -503,8 +503,12 @@ enum {
     
     self.gradientView.frame = self.gradientView.superview.bounds;
     
-    if([self.delegate respondsToSelector:@selector(isFacebookSessionOpen)] &&
+    /*if([self.delegate respondsToSelector:@selector(isFacebookSessionOpen)] &&
        ![self.delegate isFacebookSessionOpen]) {
+        [self setSendButtonTitle:NSLocalizedString(@"Log in",@"")];
+    }*/
+    
+    if([[[SCFacebook shared]facebook]isSessionValid]){
         [self setSendButtonTitle:NSLocalizedString(@"Log in",@"")];
     }
     [self.navImage setNeedsDisplay];
@@ -519,14 +523,10 @@ enum {
 
 - (void)updateView
 {
-    if([self.delegate respondsToSelector:@selector(isFacebookSessionOpen)] &&
-       [self.delegate isFacebookSessionOpen])
+    if([[[SCFacebook shared]facebook]isSessionValid])
     {
         [self setSendButtonTitle:NSLocalizedString(@"Post",@"")];
-    }
-    else if([self.delegate respondsToSelector:@selector(isFacebookSessionOpen)] &&
-            ![self.delegate isFacebookSessionOpen])
-    {
+    } else {
         [self setSendButtonTitle:NSLocalizedString(@"Log in",@"")];
     }
     
