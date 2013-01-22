@@ -1,6 +1,6 @@
 # [DEFacebookComposeViewController](https://github.com/sakrist/FacebookSample)-Enhanced
 
-**Modified to add delegation and ARC support.**
+**Originally modified to add delegation and ARC support. I am forking this to remove the delegation and handle all Facebook Calls internally with SCFacebook.**
 
 ![image](http://iamjo.sh/github-images/defacebookcomposeviewcontroller_enhanced/screenshot.jpg)
 
