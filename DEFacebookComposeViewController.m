@@ -126,7 +126,8 @@ UIPopoverControllerDelegate>
 
 enum {
     DEFacebookComposeViewControllerNoAccountsAlert = 1,
-    DEFacebookComposeViewControllerCannotSendAlert
+    DEFacebookComposeViewControllerCannotSendAlert,
+    DEFacebookComposeViewControllerSuccess
 };
 
 #define degreesToRadians(x) (M_PI * x / 180.0f)
@@ -503,11 +504,6 @@ enum {
     
     self.gradientView.frame = self.gradientView.superview.bounds;
     
-    /*if([self.delegate respondsToSelector:@selector(isFacebookSessionOpen)] &&
-       ![self.delegate isFacebookSessionOpen]) {
-        [self setSendButtonTitle:NSLocalizedString(@"Log in",@"")];
-    }*/
-    
     if([[[SCFacebook shared]facebook]isSessionValid]){
         [self setSendButtonTitle:NSLocalizedString(@"Log in",@"")];
     }
@@ -593,27 +589,38 @@ enum {
 
 - (IBAction)send
 {
-    if([self.delegate respondsToSelector:@selector(isFacebookSessionOpen)])
-    {
-        if([self.delegate isFacebookSessionOpen])
-        {
-            if([self.delegate respondsToSelector:@selector(facebookComposeController:didPostText:)])
-            {
-                [self.delegate facebookComposeController:self didPostText:self.textView.text];
-            }
-        }
-        else
-        {
-            if([self.delegate respondsToSelector:@selector(facebookComposeControllerDidStartLogin:)])
-            {
-                [self.delegate facebookComposeControllerDidStartLogin:self];
-            }
-        }
+    if([[[SCFacebook shared]facebook]isSessionValid]){
+        
+        [SCFacebook feedPostWithPhoto:[self.images objectAtIndex:0] caption:self.textView.text callBack:^(BOOL success, id result) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                    if (success) {
+                        UIAlertView*alert = [[UIAlertView alloc]initWithTitle:@"Success" message:@"Your image was successfully posted to Facebook" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                        [alert setTag:DEFacebookComposeViewControllerSuccess];
+                        [alert show];
+                    }else{
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Send Message", @"")
+                                                                             message:NSLocalizedString(@"The message cannot be sent because the connection to Facebook failed.", @"")
+                                                                            delegate:self
+                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                                   otherButtonTitles:NSLocalizedString(@"Try Again", @""), nil];
+                        alertView.tag = DEFacebookComposeViewControllerCannotSendAlert;
+                        [alertView show];
+                    }
+            });
+        }];
+
+    } else {
+
+        [SCFacebook loginCallBack:^(BOOL success, id result) {
+            [self updateView];
+        }];
+        
     }
     
     
+    
     self.sendButton.enabled = NO;
-        
+    
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [activity setCenter:CGPointMake(_sendButton.frame.size.width/2, _sendButton.frame.size.height/2)];
     [self setSendButtonTitle:@""];
@@ -625,10 +632,7 @@ enum {
 
 - (IBAction)cancel
 {
-    if([self.delegate respondsToSelector:@selector(facebookComposeControllerDidCancel:)])
-    {
-        [self.delegate facebookComposeControllerDidCancel:self];
-    }
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -646,12 +650,13 @@ enum {
 {
     if (alertView.tag == DEFacebookComposeViewControllerNoAccountsAlert) {
         [self dismissModalViewControllerAnimated:YES];
-    }
-    else if (alertView.tag == DEFacebookComposeViewControllerCannotSendAlert) {
+    } else if (alertView.tag == DEFacebookComposeViewControllerCannotSendAlert) {
         if (buttonIndex == 1) {
                 // The user wants to try again.
             [self send];
         }
+    } else if (alertView.tag == DEFacebookComposeViewControllerSuccess) {
+        [self dismissModalViewControllerAnimated:YES];
     }
 }
 

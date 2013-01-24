@@ -1,2 +1,2 @@
-#define kDEConsumerKey @"RuNtmhkq93QrO3RluZz02A"
-#define kDEConsumerSecret @"WhdLAFEj6zVtq8rwxUlaFvI2diQyfviIsmE3z1i1s"
+#define kDEConsumerKey @"LAiYLM6iFnb7WowQKxlKsg"
+#define kDEConsumerSecret @"GoVv8M5MDsJXDgDW1eFEDZmXOfFVLJx5NqBJBnLLmc"

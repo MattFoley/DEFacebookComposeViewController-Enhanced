@@ -26,7 +26,7 @@
 #import <Foundation/Foundation.h>
 #import "Facebook.h"
 
-#define kAppId @"157031841085902"
+#define kAppId @"322325311202937"
 
 #define OPEN_URL @"OPEN_URL"
 #define FQL_USER_STANDARD @"uid, name, email, birthday_date, about_me, pic"
