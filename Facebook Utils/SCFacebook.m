@@ -439,6 +439,16 @@ static SCFacebook * _scFacebook = nil;
 #pragma mark - 
 #pragma mark FBDialogDelegate Methods
 
+- (void)fbSessionInvalidated
+{
+    DLog(@"Session invalidated");
+}
+
+- (void)fbDidExtendToken:(NSString *)accessToken expiresAt:(NSDate *)expiresAt
+{
+    DLog(@"Token Extended");
+}
+
 /**
  * Called when a UIServer Dialog successfully return. Using this callback
  * instead of dialogDidComplete: to properly handle successful shares/sends

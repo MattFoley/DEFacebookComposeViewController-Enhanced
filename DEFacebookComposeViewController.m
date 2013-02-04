@@ -33,8 +33,6 @@
 #import "SCFacebook.h"
 #import <Social/Social.h>
 
-static BOOL waitingForAccess = NO;
-
 NSString *const DEFacebookComposeViewControllerDelegateDidFinishFBOperation = @"DEFacebookComposeViewControllerDelegateDidFinishFBOperation";
 
 
@@ -707,6 +705,11 @@ enum {
     if (right) frame.origin.x -= offset;
     frame.size.width = s.width;
     button.frame = frame;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
 }
 
 @end
