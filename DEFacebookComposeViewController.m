@@ -592,6 +592,7 @@ enum {
         [SCFacebook feedPostWithPhoto:[self.images objectAtIndex:0] caption:self.textView.text callBack:^(BOOL success, id result) {
             dispatch_async(dispatch_get_main_queue(), ^{
                     if (success) {
+                        [[MapCraftAppDelegate appDelegate]trackPageViewWithName:@"Facebook post succeeded"];
                         UIAlertView*alert = [[UIAlertView alloc]initWithTitle:@"Success" message:@"Your image was successfully posted to Facebook" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                         [alert setTag:DEFacebookComposeViewControllerSuccess];
                         [alert show];
