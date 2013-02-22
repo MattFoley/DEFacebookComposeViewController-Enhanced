@@ -294,6 +294,11 @@ enum {
     //self.backgroundImageView.frame = [self.view convertRect:self.backgroundImageView.frame fromView:[UIApplication sharedApplication].keyWindow];
     [self.view insertSubview:self.gradientView aboveSubview:self.backgroundImageView];
     
+    [self setNavBarMask];
+}
+
+- (void)setNavBarMask
+{
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
     UIBezierPath *roundedPath = [UIBezierPath bezierPathWithRoundedRect:self.navImage.bounds
                                                       byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight
@@ -409,7 +414,8 @@ enum {
 #pragma mark - Private
 
 - (void)updateFramesForOrientation:(UIInterfaceOrientation)interfaceOrientation
-{    
+{
+
     CGFloat buttonHorizontalMargin = 8.0f;
     CGFloat cardWidth, cardTop, cardHeight, cardHeaderLineTop, buttonTop;
     UIImage *cancelButtonImage, *sendButtonImage;
@@ -459,6 +465,7 @@ enum {
     self.cardView.frame = CGRectMake(cardLeft, cardTop, cardWidth, cardHeight);
     
     self.navImage.frame = CGRectMake(0, 0, cardWidth, 44);
+    [self setNavBarMask];
     
     self.titleLabel.font = [UIFont boldSystemFontOfSize:titleLabelFontSize];
     self.titleLabel.frame = CGRectMake(0.0f, titleLabelTop, cardWidth, self.titleLabel.frame.size.height);
