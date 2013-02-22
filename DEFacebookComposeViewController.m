@@ -715,9 +715,9 @@ enum {
     button.frame = frame;
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+/*- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
-}
+}*/
 
 @end
